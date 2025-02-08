@@ -24,6 +24,7 @@ class PlacesScreen extends ConsumerWidget {
               },
               icon: Icon(Icons.add))
         ],
+        backgroundColor: Theme.of(context).primaryColor,
       ),
       body: PlacesList(places: userPlaces),
     );
