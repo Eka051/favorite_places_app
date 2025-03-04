@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:favorite_places_app/models/place.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:location/location.dart';
 import 'package:http/http.dart' as http;
 
@@ -26,7 +27,8 @@ class _LocationInputState extends State<LocationInput> {
     }
     final lat = _pickedLocation!.latitude;
     final lng = _pickedLocation!.latitude;
-    return 'https://maps.googleapis.com/maps/api/staticmap?center=$lat,$lng=&zoom=16&size=600x300&maptype=roadmap&markers=color:red%7Clabel:A%7C$lat,$lng&key=AIzaSyDLcwxUggpPZo8lcbH0TB4Crq5SJjtj4ag';
+    final apiKey = dotenv.env['GEOMAPS_API_KEY'];
+    return "https://maps.geoapify.com/v1/staticmap?style=osm-bright-smooth&width=600&height=400&center=lonlat:$lng,$lat&zoom=12&&apiKey=$apiKey";
   }
 
   void _getCurrentLocation() async {
@@ -59,16 +61,17 @@ class _LocationInputState extends State<LocationInput> {
     locationData = await location.getLocation();
     final lat = locationData.latitude;
     final lng = locationData.longitude;
+    final apiKey = dotenv.env['GEOMAPS_API_KEY'];
 
     if (lat == null || lng == null) {
       return;
     }
 
     final url = Uri.parse(
-        'https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$lng&key=AIzaSyDLcwxUggpPZo8lcbH0TB4Crq5SJjtj4ag');
+        'https://api.geoapify.com/v1/geocode/reverse?lat=$lat&lon=$lng&apiKey=$apiKey');
     final response = await http.get(url);
     final resData = json.decode(response.body);
-    final address = resData['results'][0]['formatted_address'];
+    final address = resData['features'][0]['properties']['formatted'];
 
     setState(() {
       _pickedLocation =

@@ -1,0 +1,2 @@
+D:/PBM/favorite_places_app/android/app/.cxx/Debug/5x1r2r4a/armeabi-v7a/CMakeFiles/edit_cache.dir
+D:/PBM/favorite_places_app/android/app/.cxx/Debug/5x1r2r4a/armeabi-v7a/CMakeFiles/rebuild_cache.dir
